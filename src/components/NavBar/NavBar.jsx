@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // For NavBar
 import {
@@ -27,6 +27,8 @@ import useStyle from "./styles";
 //For toggle button - for light and dark theme
 import { useTheme } from "@mui/material/styles";
 
+import { Sidebar } from "..";
+
 const NavBar = () => {
   const classes = useStyle();
 
@@ -37,8 +39,12 @@ const NavBar = () => {
   const theme = useTheme();
 
   const isAuthenticated = true;
+
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <>
+      {/* Navigation Bar  */}
+
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
           {/* If device is a mobile, then do below things */}
@@ -47,7 +53,8 @@ const NavBar = () => {
               color="inherit"
               edge="start"
               style={{ outline: "none" }}
-              onClick={() => {}}
+              // set mobileOpen to be in a different state than it was right now
+              onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               className={classes.menuButton}
             >
               <Menu />
@@ -85,6 +92,35 @@ const NavBar = () => {
           {isMobile && "Search..."}
         </Toolbar>
       </AppBar>
+
+      {/* Side Bar  */}
+
+      <div>
+        <nav className={classes.drawer}>
+          {isMobile ? (
+            <Drawer
+              variant="temporary"
+              anchor="right"
+              open={mobileOpen}
+              // set mobileOpen to be in a different state than it was right now
+              onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
+              // className={classes.drawerBackground}
+              classes={{ paper: classes.drawerPaper }}
+              ModalProps={{ keepMounted: true }}
+            >
+              <Sidebar setMobileOpen={setMobileOpen} />
+            </Drawer>
+          ) : (
+            <Drawer
+              classes={{ paper: classes.drawerPaper }}
+              variant="permanent"
+              open
+            >
+              <Sidebar setMobileOpen={setMobileOpen} />
+            </Drawer>
+          )}
+        </nav>
+      </div>
     </>
   );
 };
