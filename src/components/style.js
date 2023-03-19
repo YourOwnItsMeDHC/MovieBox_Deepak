@@ -4,6 +4,5 @@ export default makeStyles(() => ({
   root: {
     display: "flex",
     height: "100%",
-    backgroundColor: "red",
   },
 }));
